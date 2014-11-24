@@ -17,3 +17,6 @@
 
 # don't upload secrets
 /config/secrets.*
+
+# specifically local files
+use_rvm
