@@ -1,10 +1,24 @@
 <h1>Encore</h1>
 <p>Find me in app/views/main/home.html.erb</p>
 <%= form_tag do %>
-  Form contents
   <%= radio_button_tag(:chart_type, "all") %>
   <%= label_tag(:chart_type_all, "Current values", :name => "chart_type") %>
   <%= radio_button_tag(:chart_type, "one") %>
   <%= label_tag(:chart_type_one, "Historical values", :name => "chart_type") %>
-  <div id='hidden_options' hidden>Hidden text</div>
+  <div id='hidden_options' hidden>
+  	<%= form_tag do %>
+  		<%= label_tag(:time_select_tag, "Time Range") %>
+  		<%= select_tag(:time_select, options_for_select([['Past Hour', 1], ['Past Day', 2], ['Past Week', 3], ['Past Month', 4], ['Past Year', 5], ['Custom', 6]], 1)) %>
+  		<div id='custom_time' hidden>
+  			<%= label_tag(:date_start_tag, "Start Date") %>
+  			<%= date_field(:date, :start, :value => Time.now.strftime("%Y-%m-%d"), :max => Time.now) %>
+  			<%= label_tag(:time_start_tag, "Start Time") %>
+  			<%= time_field(:time, :start, :value => Time.now.strftime("%H:%M:%S")) %>
+  			<%= label_tag(:date_end_tag, "End Date") %>
+			<%= date_field(:date, :end, :value => Time.now.strftime("%Y-%m-%d"), :max => Time.now, :min => "2014-12-05") %>
+			<%= label_tag(:time_end_tag, "End Time") %>
+  			<%= time_field(:time, :end, :value => Time.now.strftime("%H:%M:%S")) %>
+  		</div>
+  	<% end %>
+  </div>
 <% end %>
