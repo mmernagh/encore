@@ -12,7 +12,7 @@
 //
 //= require jquery
 //= require jquery_ujs
-//= require jquery-ui/datepicker
+//= require Chart
 //= requre home
 //= require turbolinks
 //= require_tree .

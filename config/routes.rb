@@ -1,5 +1,8 @@
 Rails.application.routes.draw do
   get 'main/home'
+  post 'main/create' => 'main#create'
+  post 'main/create/:resource/:time' => 'main#create'
+  post 'main/create/:resource/:start_time/:end_time' => 'main#create'
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

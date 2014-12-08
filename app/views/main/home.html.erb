@@ -1,12 +1,14 @@
 <h1>Encore</h1>
 <p>Find me in app/views/main/home.html.erb</p>
-<%= form_tag do %>
+<%= form_tag("create", remote: true) do %>
   <%= radio_button_tag(:chart_type, "all") %>
   <%= label_tag(:chart_type_all, "Current values", :name => "chart_type") %>
   <%= radio_button_tag(:chart_type, "one") %>
   <%= label_tag(:chart_type_one, "Historical values", :name => "chart_type") %>
   <div id='hidden_options' hidden>
   	<%= form_tag do %>
+  		<%= label_tag(:resource_select_tag, "Resource") %>
+  		<%= select_tag(:resource_select, options_for_select([['Solar Power', 1], ['Total Power', 2], ['Voltage', 3]], 1)) %>
   		<%= label_tag(:time_select_tag, "Time Range") %>
   		<%= select_tag(:time_select, options_for_select([['Past Hour', 1], ['Past Day', 2], ['Past Week', 3], ['Past Month', 4], ['Past Year', 5], ['Custom', 6]], 1)) %>
   		<div id='custom_time' hidden>
@@ -21,4 +23,9 @@
   		</div>
   	<% end %>
   </div>
+  <%= submit_tag("Update") %>
 <% end %>
+<div id='tmp' hidden>
+	JSON test
+	<canvas id='chart'></canvas>
+</div>
