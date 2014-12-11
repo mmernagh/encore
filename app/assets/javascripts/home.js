@@ -1,4 +1,12 @@
 var chart;
+var labels = ["Hall Light", "Bath Light", "Bedroom Outlets", "Main Room Lights", "Outdoor Outlets", "Daikin Hydrobox", 
+				"Main Room Outlets", "Disposal", "Office Outlets", "Air Handler", "JACE, Webbox, RIO", "Smoke Alarms",
+				"ERV, Dining Light", "Solar Thermal Hot Water", "Refrigerator", "Washer", "Microwave", "Bath",  "Kitchen Outlets W", 
+				"Kitchen Outlets E", "Veris", "Dishwasher", "Dryer", "Hot Water Tank", "Oven", "Outdoor Daikin", "Cooktop",
+				"Voltage", "Total Power", "Solar Power"];
+$( document ).ready(function() {
+	request_default_chart();
+});
 
 function display_historical_options() {
 	if ($('#chart_type_one').is(':checked')) {
@@ -36,46 +44,76 @@ function restrict_start_date() {
 	}
 }
 
+function request_default_chart() {
+	$.ajax({
+	    type: "POST",
+	    url: "create.json",
+	    dataType: "json",
+	    success: function(data) {
+	        update_chart(data);
+	    }
+	});
+}
+
 function update_chart(data) {
-	$('#tmp').html(data.title);
-	$('#tmp').show();
-	var chart_data = {
-	    labels: ["January", "February", "March", "April", "May", "June", "July"],
-	    datasets: [
-	        {
-	            label: "My First dataset",
-	            fillColor: "rgba(220,220,220,0.5)",
-	            strokeColor: "rgba(220,220,220,0.8)",
-	            highlightFill: "rgba(220,220,220,0.75)",
-	            highlightStroke: "rgba(220,220,220,1)",
-	            data: [65, 59, 80, 81, 56, 55, 40]
-	        },
-	        {
-	            label: "My Second dataset",
-	            fillColor: "rgba(151,187,205,0.5)",
-	            strokeColor: "rgba(151,187,205,0.8)",
-	            highlightFill: "rgba(151,187,205,0.75)",
-	            highlightStroke: "rgba(151,187,205,1)",
-	            data: [28, 48, 40, 19, 86, 27, 90]
-	        }
-	    ]
-	};
+	var chart_data;
 	var ctx = $('#chart').get(0).getContext('2d');
-	if (data.type == 'b') {
-		if (typeof chart !== 'undefined') {
-			chart.destroy();
-			chart = new Chart(ctx).Bar(chart_data, {});
-		} else {
-			chart = new Chart(ctx).Bar(chart_data, {});
+	if ($('#chart_type_all').is(':checked')) {
+		if (typeof data.err != 'undefined') alert('Missing data');
+		else {
+			chart_data = {
+				labels: labels,
+				datasets: [{
+					label: "Current Values",
+					fillColor: "rgba(220,220,220,0.5)",
+		            strokeColor: "rgba(220,220,220,0.8)",
+		            highlightFill: "rgba(220,220,220,0.75)",
+		            highlightStroke: "rgba(220,220,220,1)",
+		            data: [data.ch0, data.ch1, data.ch2, data.ch3, data.ch4, data.ch5, data.ch6, data.ch7, data.ch8, data.ch9, data.ch10,
+		            	data.ch11, data.ch12, data.ch13, data.ch14, data.ch15, data.ch16, data.ch17, data.ch18, data.ch20, data.ch21, 
+		            	data.ch22, data.ch24, data.ch25, data.ch28, data.ch29, data.ch33, data.volt, data.tot_pwr, data.sol_pwr]
+					}]
+			};
+			if (typeof chart !== 'undefined') {
+				chart.destroy();
+				chart = new Chart(ctx).Bar(chart_data, {});
+			} else {
+				chart = new Chart(ctx).Bar(chart_data, {});
+			}	
 		}
 	} else {
-		if (typeof chart !== 'undefined') {
-			chart.destroy();
-			chart = new Chart(ctx).Line(chart_data, {});
-		} else {
-			chart = new Chart(ctx).Line(chart_data, {});
+		if (typeof data.err != 'undefined') alert('Missing data');
+		else {
+			switch ($('#time_select').val()) {
+				case '1':
+					alert("hola");
+					chart_data = {
+						labels: data.labels,
+						datasets: [{
+							label: "Current Values",
+							fillColor: "rgba(220,220,220,0.5)",
+				            strokeColor: "rgba(220,220,220,0.8)",
+				            highlightFill: "rgba(220,220,220,0.75)",
+				            highlightStroke: "rgba(220,220,220,1)",
+				            data: data.vals
+						}]
+					};
+					break;
+				case 2:
+				case 3:
+				case 4:
+				case 5:
+				default:
+			}
+			if (typeof chart !== 'undefined') {
+				chart.destroy();
+				chart = new Chart(ctx).Line(chart_data, {});
+			} else {
+				chart = new Chart(ctx).Line(chart_data, {});
+			}
 		}
 	}
+	$('#tmp').html(data.err + ", " + data.timestamp + ", " + data.labels + ", " + data.vals);
 }
 
 jQuery(function(){
@@ -125,14 +163,7 @@ jQuery(function(){
     jQuery("input[type='submit']").each(function(index, button){
         jQuery(button).click(function(){
         	if ($('#chart_type_all').is(':checked')) {
-	            $.ajax({
-				    type: "POST",
-				    url: "create.json",
-				    dataType: "json",
-				    success: function(data) {
-				        update_chart(data);
-				    }
-				});
+	            request_default_chart();
 	        } else {
 	        	$.ajax({
 				    type: "POST",

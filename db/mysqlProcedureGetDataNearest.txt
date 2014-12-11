@@ -1,0 +1,3 @@
+DELIMITER //
+CREATE PROCEDURE get_nearest (IN col varchar(9), IN time datetime, OUT value INT) READS SQL DATA BEGIN SET @s = CONCAT('SELECT ', @col, ' INTO @tmp FROM ((SELECT ', @col, ', ABS(UNIX_TIMESTAMP(timestamp) - UNIX_TIMESTAMP(\'', @time, '\')) AS time_diff FROM records WHERE `timestamp` > \'', @time, '\' ORDER BY `timestamp` ASC LIMIT 1) UNION ALL (SELECT ', @col, ', ABS(UNIX_TIMESTAMP(timestamp) - UNIX_TIMESTAMP(\'', @time, '\')) AS time_diff FROM records WHERE `timestamp` < \'', @time, '\' ORDER BY `timestamp` DESC LIMIT 1)) AS tmp ORDER BY time_diff LIMIT 1'); PREPARE stmt FROM @s; EXECUTE stmt; SELECT @tmp INTO value; END//
+DELIMITER ;
