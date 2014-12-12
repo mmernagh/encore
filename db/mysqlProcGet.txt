@@ -1,0 +1,3 @@
+DELIMITER //
+CREATE PROCEDURE get (IN col VARCHAR(9), IN nr INT, IN step INT, IN end DATETIME) READS SQL DATA BEGIN CREATE TEMPORARY TABLE IF NOT EXISTS tmp_table (vals INT); SET @counter = nr; WHILE @counter > 0 DO CALL get_nearest(col, DATE(UNIX_TIMESTAMP(end) - (nr - @counter) * step), @val); INSERT INTO tmp_table VALUES (@val); SET @counter = @counter - 1; END WHILE; SELECT * FROM tmp_table; END//
+DELIMITER ;

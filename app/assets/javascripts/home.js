@@ -58,22 +58,23 @@ function request_default_chart() {
 function update_chart(data) {
 	var chart_data;
 	var ctx = $('#chart').get(0).getContext('2d');
+	chart_data = {
+		labels: labels,
+		datasets: [{
+			label: "Current Values",
+			fillColor: "rgba(220,220,220,0.5)",
+            strokeColor: "rgba(220,220,220,0.8)",
+            highlightFill: "rgba(220,220,220,0.75)",
+            highlightStroke: "rgba(220,220,220,1)",
+            data: []
+			}]
+	};
 	if ($('#chart_type_all').is(':checked')) {
 		if (typeof data.err != 'undefined') alert('Missing data');
 		else {
-			chart_data = {
-				labels: labels,
-				datasets: [{
-					label: "Current Values",
-					fillColor: "rgba(220,220,220,0.5)",
-		            strokeColor: "rgba(220,220,220,0.8)",
-		            highlightFill: "rgba(220,220,220,0.75)",
-		            highlightStroke: "rgba(220,220,220,1)",
-		            data: [data.ch0, data.ch1, data.ch2, data.ch3, data.ch4, data.ch5, data.ch6, data.ch7, data.ch8, data.ch9, data.ch10,
+			chart_data.datasets[0].data = [data.ch0, data.ch1, data.ch2, data.ch3, data.ch4, data.ch5, data.ch6, data.ch7, data.ch8, data.ch9, data.ch10,
 		            	data.ch11, data.ch12, data.ch13, data.ch14, data.ch15, data.ch16, data.ch17, data.ch18, data.ch20, data.ch21, 
-		            	data.ch22, data.ch24, data.ch25, data.ch28, data.ch29, data.ch33, data.volt, data.tot_pwr, data.sol_pwr]
-					}]
-			};
+		            	data.ch22, data.ch24, data.ch25, data.ch28, data.ch29, data.ch33, data.volt, data.tot_pwr, data.sol_pwr];
 			if (typeof chart !== 'undefined') {
 				chart.destroy();
 				chart = new Chart(ctx).Bar(chart_data, {});
@@ -84,27 +85,8 @@ function update_chart(data) {
 	} else {
 		if (typeof data.err != 'undefined') alert('Missing data');
 		else {
-			switch ($('#time_select').val()) {
-				case '1':
-					alert("hola");
-					chart_data = {
-						labels: data.labels,
-						datasets: [{
-							label: "Current Values",
-							fillColor: "rgba(220,220,220,0.5)",
-				            strokeColor: "rgba(220,220,220,0.8)",
-				            highlightFill: "rgba(220,220,220,0.75)",
-				            highlightStroke: "rgba(220,220,220,1)",
-				            data: data.vals
-						}]
-					};
-					break;
-				case 2:
-				case 3:
-				case 4:
-				case 5:
-				default:
-			}
+			chart_data.labels = data.labels;
+			chart_data.datasets[0].data = data.vals;
 			if (typeof chart !== 'undefined') {
 				chart.destroy();
 				chart = new Chart(ctx).Line(chart_data, {});
