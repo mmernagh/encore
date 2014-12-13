@@ -169,54 +169,17 @@ jQuery(function(){
         });
     });
     jQuery("button[type='button'][id='down']").each(function(index, button){
-    	var dn = null;
         jQuery(button).click(function(){
         	if ($('#chart_type_all').is(':checked')) {
 	            // TODO
 	        } else if ($('#time_select').val() == 6) {
 	        	var url = "down/" + $('#resource_select').val() + "/" + $('#date_start').val() +  "%20" + $('#time_start').val()  + "/" +
 				    	$('#date_end').val() +  "%20" + $('#time_end').val() + ".csv";
-				 /*
-	        	$.ajax({
-				    type: "POST",
-				    url: "down/" + $('#resource_select').val() + "/" + $('#date_start').val() +  "%20" + $('#time_start').val()  + "/" +
-				    	$('#date_end').val() +  "%20" + $('#time_end').val() + ".csv",
-				    dataType: "text/csv",
-				    format: "csv",
-				    rel: "nofollow",
-				    // async: false,
-				    // success: function(response) { dn = response;}
-				});
-        */
 	        } else {
 	      		var url = "down/" + $('#resource_select').val() + "/" + $('#time_select').val() + ".csv";
-	      		/*
-	        	$.ajax({
-				    type: "POST",
-				    url: "down/" + $('#resource_select').val() + "/" + $('#time_select').val() + ".csv",
-				    dataType: "text/csv",
-				    format: "csv",
-				    rel: "nofollow",
-				    // async: false,
-				    // success: function(response) { dn = response;}
-				});
-*/
 	        }
 	        $('#href').attr('href', url);
 	        $('#href').click();
-	        // alert(dn);
-	        //window.open("data:text/csv;charset=utf-8," + escape(dn))
         });
     });
-    /*
-    jQuery("input[type='date']").each(function(index, button){
-        // Give the button a certain click behaviour:
-        jQuery(button).datepicker({
-        	defaultDate: 0,
-        	maxDate: 0,
-        	// TODO: update this before production, remember that month is zero based
-        	minDate: new Date(2014, 11, 6)
-        });
-    });
-	*/
 });
