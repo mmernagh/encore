@@ -3,6 +3,9 @@ Rails.application.routes.draw do
   post 'main/create' => 'main#create'
   post 'main/create/:resource/:time' => 'main#create'
   post 'main/create/:resource/:start_time/:end_time' => 'main#create'
+  post 'main/down' => 'main#down'
+  post 'main/down/:resource/:time' => 'main#down'
+  post 'main/down/:resource/:start_time/:end_time' => 'main#down'
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

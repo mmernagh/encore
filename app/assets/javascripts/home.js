@@ -142,10 +142,20 @@ jQuery(function(){
             restrict_start_date();
         });
     });
-    jQuery("input[type='submit']").each(function(index, button){
+    jQuery("input[type='submit'][id='update']").each(function(index, button){
         jQuery(button).click(function(){
         	if ($('#chart_type_all').is(':checked')) {
 	            request_default_chart();
+	        }else if ($('#time_select').val() == 6) {
+	        	$.ajax({
+				    type: "POST",
+				    url: "create/" + $('#resource_select').val() + "/" + $('#date_start').val() +  "%20" + $('#time_start').val()  + "/" +
+				    	$('#date_end').val() +  "%20" + $('#time_end').val()  +".json",
+				    dataType: "json",
+				    success: function(data) {
+				        update_chart(data);
+				    }
+				});
 	        } else {
 	        	$.ajax({
 				    type: "POST",
@@ -156,6 +166,46 @@ jQuery(function(){
 				    }
 				});
 	        }
+        });
+    });
+    jQuery("button[type='button'][id='down']").each(function(index, button){
+    	var dn = null;
+        jQuery(button).click(function(){
+        	if ($('#chart_type_all').is(':checked')) {
+	            // TODO
+	        } else if ($('#time_select').val() == 6) {
+	        	var url = "down/" + $('#resource_select').val() + "/" + $('#date_start').val() +  "%20" + $('#time_start').val()  + "/" +
+				    	$('#date_end').val() +  "%20" + $('#time_end').val() + ".csv";
+				 /*
+	        	$.ajax({
+				    type: "POST",
+				    url: "down/" + $('#resource_select').val() + "/" + $('#date_start').val() +  "%20" + $('#time_start').val()  + "/" +
+				    	$('#date_end').val() +  "%20" + $('#time_end').val() + ".csv",
+				    dataType: "text/csv",
+				    format: "csv",
+				    rel: "nofollow",
+				    // async: false,
+				    // success: function(response) { dn = response;}
+				});
+        */
+	        } else {
+	      		var url = "down/" + $('#resource_select').val() + "/" + $('#time_select').val() + ".csv";
+	      		/*
+	        	$.ajax({
+				    type: "POST",
+				    url: "down/" + $('#resource_select').val() + "/" + $('#time_select').val() + ".csv",
+				    dataType: "text/csv",
+				    format: "csv",
+				    rel: "nofollow",
+				    // async: false,
+				    // success: function(response) { dn = response;}
+				});
+*/
+	        }
+	        $('#href').attr('href', url);
+	        $('#href').click();
+	        // alert(dn);
+	        //window.open("data:text/csv;charset=utf-8," + escape(dn))
         });
     });
     /*

@@ -1,6 +1,51 @@
 class MainController < ApplicationController
   def home
   end
+  def dummy
+  	home
+  end
+  def down
+  	respond_to do |format|
+  		format.html
+      	if params.key?(:resource)
+	        case params[:resource]
+	      	when "42"
+		    	@ch = "volt"
+		    when "43"
+		    	@ch = "tot_pwr"
+		    when "44"
+		    	@ch = "sol_pwr"
+		    else
+		    	@ch = "ch#{index}"
+		    end
+      	end
+      	if params.key?(:time)
+      		@stop = Time.now
+	      	case params[:time]
+			when "1"    
+	        	@start = Time.now - 60 * 60
+	        when "2"
+	        	@start = Time.now - 60 * 60 * 24
+	        when "3"
+	        	@start = Time.now - 60 * 60 * 24 * 7
+	        when "4"
+	        	@start = Time.now - 60 * 60 * 24 * 30
+	        when "5"
+	        	@start = Time.now - 60 * 60 * 24 * 365
+	        end
+		elsif params.key?(:start_time)
+			@start = Time.parse(params[:start_end])
+			@stop = Time.parse(params[:end_time])
+		else
+			# TODO: just present values
+		end
+		format.csv do
+	      headers['Content-Disposition'] = "attachment; filename=\"user-list\""
+	      headers['Content-Type'] ||= 'text/csv'
+	      render csv: ['fake', 'data']
+	    end
+	end
+  end
   def create
   	respond_to do |format|
         format.html
@@ -65,6 +110,7 @@ class MainController < ApplicationController
     end
   end
 
+  private
   def getData(res, num, step, stop, format)
   	labels = Array.new(num)
   	vals = Record.retrieve(res, num, step, stop.strftime("%Y-%m-%d %H:%M:%S"))
@@ -75,6 +121,4 @@ class MainController < ApplicationController
   	end
   	Hash[[[:labels, labels], [:vals, vals]]]
   end
-
-  private :getData
 end

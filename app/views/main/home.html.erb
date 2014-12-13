@@ -22,9 +22,13 @@
   		</div>
   	<% end %>
   </div>
-  <%= submit_tag("Update") %>
+  <%= submit_tag("Update", :id => 'update') %>
 <% end %>
 <div id='chart_div'>
 	<canvas id='chart' height='600' width='900'></canvas>
 </div>
+<%= form_tag("down", remote: true) do %>
+	<%= button_tag("Download", :type => 'button', :id => 'down') %>
+<% end %>
 <div id='tmp'></div>
+<%= link_to 'Download as .csv', 'down/44/1.csv', format: :csv, method: 'post', hidden: :true, id: :href %>

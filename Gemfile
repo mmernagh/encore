@@ -8,6 +8,10 @@ gem 'mysql2'
 # Use sqlserver
 gem 'tiny_tds'
 gem 'activerecord-sqlserver-adapter'
+# Use puma for server
+gem 'puma'
+# gem for csv streaming
+#gem 'streamy_csv'
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 4.0.3'
 # Use Uglifier as compressor for JavaScript assets

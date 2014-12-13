@@ -1,0 +1,6 @@
+<% self.formats = [:csv] %>
+<%- headers = [@ch, 'Timestamp'] -%>
+<%= CSV.generate_line headers %>
+<%- Record.select(['id', @ch, "timestamp"]).where(:timestamp => @start..@stop).find_each do |record| -%>
+  <%= CSV.generate_line([record.attributes[@ch], record.attributes['timestamp'].strftime("%Y-%m-%d %H:%M:%S")], :row_sep => ?\t, :quote_char => ?\ ) %>
+<%- end -%>
