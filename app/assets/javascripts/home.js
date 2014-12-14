@@ -100,45 +100,37 @@ function update_chart(data) {
 }
 
 jQuery(function(){
-    // For each radio button whose name is 'chart_type':
     jQuery("input[type='radio'][name='chart_type']").each(function(index, button){
-        // Give the button a certain click behaviour:
         jQuery(button).click(function(){
             display_historical_options();
         });
     });
     jQuery("label[type='radio'][name='chart_type']").each(function(index, button){
-        // Give the button a certain click behaviour:
         jQuery(button).click(function(){
             display_historical_options();
         });
     });
     jQuery("select[name='time_select']").each(function(index, button){
-        // Give the button a certain click behaviour:
         jQuery(button).click(function(){
             display_custom_times();
         });
     });
     jQuery("input[type='date'][name='date[start]']").each(function(index, button){
-        // Give the button a certain click behaviour:
         jQuery(button).focusout(function(){
             restrict_end_date();
         });
     });
     jQuery("input[type='time'][name='time[start]']").each(function(index, button){
-        // Give the button a certain click behaviour:
         jQuery(button).focusout(function(){
             restrict_end_date();
         });
     });
     jQuery("input[type='date'][name='date[end]']").each(function(index, button){
-        // Give the button a certain click behaviour:
         jQuery(button).focusout(function(){
             restrict_start_date();
         });
     });
     jQuery("input[type='time'][name='time[end]']").each(function(index, button){
-        // Give the button a certain click behaviour:
         jQuery(button).focusout(function(){
             restrict_start_date();
         });
@@ -172,7 +164,7 @@ jQuery(function(){
     jQuery("button[type='button'][id='down']").each(function(index, button){
         jQuery(button).click(function(){
         	if ($('#chart_type_all').is(':checked')) {
-	            // TODO
+	            var url = "down.csv"
 	        } else if ($('#time_select').val() == 6) {
 	        	var url = "down/" + $('#resource_select').val() + "/" + $('#date_start').val() +  "%20" + $('#time_start').val()  + "/" +
 				    	$('#date_end').val() +  "%20" + $('#time_end').val() + ".csv";

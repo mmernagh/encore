@@ -101,9 +101,9 @@ class MainController < ApplicationController
         		@data = {err: '1'}
         	end
         end
-        format.json {
+        format.json do
         	render :json => @data
-        }
+        end
     end
   end
 
