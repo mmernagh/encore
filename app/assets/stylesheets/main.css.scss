@@ -1,3 +1,64 @@
 // Place all the styles related to the Main controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+
+#title {
+	width: 400px;
+	margin: 0 auto;
+	text-align: center;
+}
+
+#chart_div {
+	width: 900px;
+	margin: 0 auto;
+}
+
+#top_form {
+	border-color: #ddd;
+	border-style: solid;
+	border-width: 1px;
+	width: 315px;
+	padding: 10px;
+	margin: 0 auto;
+}
+
+.row_opt {
+	margin-top: 3px;
+	min-height: 25px;
+}
+
+.opt {
+	padding-top: 7px;
+}
+
+.tag {
+	line-height: 20px;
+}
+
+.pick {
+	width: 175px;
+	float: right;
+	margin-right: 5px;
+}
+
+.t_row_opt {
+	margin: 10px 0;
+}
+
+.t_pick {
+	width: 140px;
+	float: right;
+	margin-right: 5px;
+}
+
+#hidden_options {
+	margin-left: 25px;
+}
+
+#act_but {
+	margin-top: 12px;
+}
+
+#down {
+	float: right;
+}

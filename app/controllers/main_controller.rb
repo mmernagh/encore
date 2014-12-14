@@ -1,11 +1,9 @@
 class MainController < ApplicationController
   def home
   end
-  def dummy
-  	home
-  end
   def down
   	respond_to do |format|
+  		@one = true
   		format.html
       	if params.key?(:resource)
 	        case params[:resource]
@@ -16,7 +14,7 @@ class MainController < ApplicationController
 		    when "44"
 		    	@ch = "sol_pwr"
 		    else
-		    	@ch = "ch#{index}"
+		    	@ch = "ch#{params[:resource]}"
 		    end
       	end
       	if params.key?(:time)
@@ -34,15 +32,14 @@ class MainController < ApplicationController
 	        	@start = Time.now - 60 * 60 * 24 * 365
 	        end
 		elsif params.key?(:start_time)
-			@start = Time.parse(params[:start_end])
+			@start = Time.parse(params[:start_time])
 			@stop = Time.parse(params[:end_time])
 		else
-			# TODO: just present values
+			@one = false
 		end
 		format.csv do
-	      headers['Content-Disposition'] = "attachment; filename=\"user-list\""
+	      headers['Content-Disposition'] = "attachment; filename=\"enCORE data.csv\""
 	      headers['Content-Type'] ||= 'text/csv'
-	      render csv: ['fake', 'data']
 	    end
 	end
   end
@@ -75,8 +72,8 @@ class MainController < ApplicationController
 	        	@data = getData(channel, 24, 60 * 60 * 24 * 15, Time.now, "%-m-%-d-%Y");
 	        end
 	    elsif params.key?(:start_time)
-	    	start = Time.parse(params[:start_time])
-	    	stop = Time.parse(params[:end_time])
+	    	start = Time.parse(params[:start_time].gsub('%20', ' '))
+	    	stop = Time.parse(params[:end_time].gsub('%20', ' '))
 	    	nr_points = 30
 	    	case stop - start
 	    	when 0..30

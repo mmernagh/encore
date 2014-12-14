@@ -1,34 +1,49 @@
-<h1>Encore</h1>
+<h1 id='title'>Encore</h1>
+<div id='chart_div'>
+	<canvas id='chart' height='500' width='900'></canvas>
+</div>
+<div id='top_form'>
 <%= form_tag("create", remote: true) do %>
   <%= radio_button_tag(:chart_type, "all", :checked => true) %>
   <%= label_tag(:chart_type_all, "Current values", :name => "chart_type") %>
-  <%= radio_button_tag(:chart_type, "one") %>
-  <%= label_tag(:chart_type_one, "Historical values", :name => "chart_type") %>
-  <div id='hidden_options' hidden>
-  	<%= form_tag do %>
-  		<%= label_tag(:resource_select_tag, "Resource") %>
-  		<%= select_tag(:resource_select, options_for_select([['Solar Power', 44], ['Total Power', 43], ['Voltage', 42], ['Hall Light', 0], ['Bath Light', 1], ['Bedroom Outlets', 2], ['Main Room Lights', 3], ['Outdoor Outlets', 4], ['Daikin Hydrobox', 5], ['Main Room Outlets', 6], ['Disposal', 7], ['Office Outlets', 8], ['Air Handler', 9], ['JACE, Webbox, RIO', 10], ['Smoke Alarms', 11], ['ERV, Dining Light', 12], ['Solar Thermal Hot Water', 13], ['Refrigerator', 14], ['Washer', 15], ['Microwave', 16], ['Bath', 17], ['Kitchen Outlets West', 18], ['Kitchen Outlets East', 20], ['Veris', 21], ['Dishwasher', 22], ['Dryer', 24], ['Hot Water Tank', 25], ['Oven', 28], ['Outdoor Daikin', 29], ['Cooktop', 33]], 44)) %>
-  		<%= label_tag(:time_select_tag, "Time Range") %> 
-  		<%= select_tag(:time_select, options_for_select([['Past Hour', 1], ['Past Day', 2], ['Past Week', 3], ['Past Month', 4], ['Past Year', 5], ['Custom', 6]], 1)) %>
-  		<div id='custom_time' hidden>
-  			<%= label_tag(:date_start_tag, "Start Date") %>
-  			<%= date_field(:date, :start, :value => Time.now.strftime("%Y-%m-%d"), :max => Time.now) %>
-  			<%= label_tag(:time_start_tag, "Start Time") %>
-  			<%= time_field(:time, :start, :value => Time.now.strftime("%H:%M:%S")) %>
-  			<%= label_tag(:date_end_tag, "End Date") %>
-			<%= date_field(:date, :end, :value => Time.now.strftime("%Y-%m-%d"), :max => Time.now, :min => "2014-12-05") %>
-			<%= label_tag(:time_end_tag, "End Time") %>
-  			<%= time_field(:time, :end, :value => Time.now.strftime("%H:%M:%S")) %>
-  		</div>
-  	<% end %>
-  </div>
-  <%= submit_tag("Update", :id => 'update') %>
-<% end %>
-<div id='chart_div'>
-	<canvas id='chart' height='600' width='900'></canvas>
-</div>
-<%= form_tag("down", remote: true) do %>
+  <div id='hist'>
+	  <%= radio_button_tag(:chart_type, "one") %>
+	  <%= label_tag(:chart_type_one, "Historical values", :name => "chart_type") %>
+	  <div class='opt' id='hidden_options' hidden>
+	  	<%= form_tag do %>
+	  		<div class='row_opt'>
+		  		<%= label_tag(:resource_select_tag, "Resource", class: :tag) %>
+		  		<%= select_tag(:resource_select, options_for_select([['Solar Power', 44], ['Total Power', 43], ['Voltage', 42], ['Hall Light', 1], ['Bath Light', 0], ['Bedroom Outlets', 3], ['Main Room Lights', 2], ['Outdoor Outlets', 5], ['Daikin Hydrobox', 4], ['Main Room Outlets', 7], ['Disposal', 6], ['Office Outlets', 9], ['Air Handler', 8], ['JACE, Webbox, RIO', 11], ['Smoke Alarms', 12], ['ERV, Dining Light', 13], ['Solar Thermal Hot Water', 12], ['Refrigerator', 15], ['Washer', 16], ['Microwave', 17], ['Bath', 16], ['Kitchen Outlets West', 19], ['Kitchen Outlets East', 21], ['Veris', 20], ['Dishwasher', 23], ['Dryer', 25], ['Hot Water Tank', 24], ['Oven', 29], ['Outdoor Daikin', 28], ['Cooktop', 32]], 44), class: :pick) %>
+		  	</div>
+		  	<div class='row_opt'>
+		  		<%= label_tag(:time_select_tag, "Time Range", class: :tag) %> 
+		  		<%= select_tag(:time_select, options_for_select([['Past Hour', 1], ['Past Day', 2], ['Past Week', 3], ['Past Month', 4], ['Past Year', 5], ['Custom', 6]], 1), class: :pick) %>
+		  		<div class='opt' id='custom_time' hidden>
+		  			<div class='t_row_opt'>
+			  			<%= label_tag(:date_start_tag, "Start Date", class: :tag) %>
+			  			<%= date_field(:date, :start, :value => Time.now.strftime("%Y-%m-%d"), :max => Time.now, class: :t_pick) %>
+			  		</div>
+			  		<div class='t_row_opt'>
+			  			<%= label_tag(:time_start_tag, "Start Time", class: :tag) %>
+			  			<%= time_field(:time, :start, :value => Time.now.strftime("%H:%M:%S"), class: :t_pick) %>
+			  		</div>
+			  		<div class='t_row_opt'>
+			  			<%= label_tag(:date_end_tag, "End Date", class: :tag) %>
+						<%= date_field(:date, :end, :value => Time.now.strftime("%Y-%m-%d"), :max => Time.now, :min => "2014-12-05", class: :t_pick) %>
+					</div>
+					<div class='t_row_opt'>
+						<%= label_tag(:time_end_tag, "End Time", class: :tag) %>
+			  			<%= time_field(:time, :end, :value => Time.now.strftime("%H:%M:%S"), class: :t_pick) %>
+			  		</div>
+		  		</div>
+		  	</div>
+	  	<% end %>
+	  </div>
+	</div>
+<div id='act_but'>
+	<%= submit_tag("Update", :id => 'update') %>  
 	<%= button_tag("Download", :type => 'button', :id => 'down') %>
+</div>
 <% end %>
-<div id='tmp'></div>
+</div>
 <%= link_to 'Download as .csv', 'down/44/1.csv', format: :csv, method: 'post', hidden: :true, id: :href %>

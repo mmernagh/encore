@@ -1,8 +1,8 @@
 var chart;
-var labels = ["Hall Light", "Bath Light", "Bedroom Outlets", "Main Room Lights", "Outdoor Outlets", "Daikin Hydrobox", 
-				"Main Room Outlets", "Disposal", "Office Outlets", "Air Handler", "JACE, Webbox, RIO", "Smoke Alarms",
-				"ERV, Dining Light", "Solar Thermal Hot Water", "Refrigerator", "Washer", "Microwave", "Bath",  "Kitchen Outlets W", 
-				"Kitchen Outlets E", "Veris", "Dishwasher", "Dryer", "Hot Water Tank", "Oven", "Outdoor Daikin", "Cooktop",
+var labels = ["Bath Light", "Hall Light", "Main Room Lights", "Bedroom Outlets", "Daikin Hydrobox", "Outdoor Outlets", 
+				"Disposal", "Main Room Outlets", "Air Handler", "Office Outlets", "Smoke Alarms",
+				"JACE, Webbox, RIO", "Solar Thermal Hot Water", "ERV, Dining Light", "Washer", "Refrigerator", "Bath",  "Microwave", 
+				"Kitchen Outlets W", "Veris", "Kitchen Outlets E", "Dishwasher", "Hot Water Tank", "Dryer", "Outdoor Daikin", "Oven", "Cooktop",
 				"Voltage", "Total Power", "Solar Power"];
 $( document ).ready(function() {
 	request_default_chart();
@@ -61,7 +61,7 @@ function update_chart(data) {
 	chart_data = {
 		labels: labels,
 		datasets: [{
-			label: "Current Values",
+			label: "Values",
 			fillColor: "rgba(220,220,220,0.5)",
             strokeColor: "rgba(220,220,220,0.8)",
             highlightFill: "rgba(220,220,220,0.75)",
@@ -73,14 +73,15 @@ function update_chart(data) {
 		if (typeof data.err != 'undefined') alert('Missing data');
 		else {
 			chart_data.datasets[0].data = [data.ch0, data.ch1, data.ch2, data.ch3, data.ch4, data.ch5, data.ch6, data.ch7, data.ch8, data.ch9, data.ch10,
-		            	data.ch11, data.ch12, data.ch13, data.ch14, data.ch15, data.ch16, data.ch17, data.ch18, data.ch20, data.ch21, 
-		            	data.ch22, data.ch24, data.ch25, data.ch28, data.ch29, data.ch33, data.volt, data.tot_pwr, data.sol_pwr];
+		            	data.ch11, data.ch12, data.ch13, data.ch14, data.ch15, data.ch16, data.ch17, data.ch19, data.ch20, data.ch21, 
+		            	data.ch23, data.ch24, data.ch25, data.ch28, data.ch29, data.ch32, data.volt, data.tot_pwr, data.sol_pwr];
 			if (typeof chart !== 'undefined') {
 				chart.destroy();
 				chart = new Chart(ctx).Bar(chart_data, {});
 			} else {
 				chart = new Chart(ctx).Bar(chart_data, {});
-			}	
+			}
+			$('#title').html('enCORE Present Values');
 		}
 	} else {
 		if (typeof data.err != 'undefined') alert('Missing data');
@@ -93,9 +94,9 @@ function update_chart(data) {
 			} else {
 				chart = new Chart(ctx).Line(chart_data, {});
 			}
+			$('#title').html('enCORE Historical Values');
 		}
 	}
-	$('#tmp').html(data.err + ", " + data.timestamp + ", " + data.labels + ", " + data.vals);
 }
 
 jQuery(function(){
@@ -149,8 +150,8 @@ jQuery(function(){
 	        }else if ($('#time_select').val() == 6) {
 	        	$.ajax({
 				    type: "POST",
-				    url: "create/" + $('#resource_select').val() + "/" + $('#date_start').val() +  "%20" + $('#time_start').val()  + "/" +
-				    	$('#date_end').val() +  "%20" + $('#time_end').val()  +".json",
+				    url: "create/" + $('#resource_select').val().replace("/", "-") + "/" + $('#date_start').val() +  "%20" + $('#time_start').val()  + "/" +
+				    	$('#date_end').val().replace("/", "-") +  "%20" + $('#time_end').val()  +".json",
 				    dataType: "json",
 				    success: function(data) {
 				        update_chart(data);
@@ -182,4 +183,15 @@ jQuery(function(){
 	        $('#href').click();
         });
     });
+    if (!Modernizr.inputtypes.date) {
+	    jQuery("input[type='date']").each(function(index, button){
+	        // Give the button a certain click behaviour:
+	        jQuery(button).datepicker({
+	        	defaultDate: 0,
+	        	maxDate: 0,
+	        	// TODO: update this before production, remember that month is zero based
+	        	minDate: new Date(2014, 11, 6)
+	        });
+	    });
+	}
 });

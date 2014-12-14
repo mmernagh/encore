@@ -1,6 +1,14 @@
 <% self.formats = [:csv] %>
-<%- headers = [@ch, 'Timestamp'] -%>
+<% if @one %>
+<% labels = {'timestamp' => 'Timestamp', 'sol_pwr' => 'Solar Power', 'tot_pwr' => 'Total Power', 'volt' => 'Voltage', 'ch0' => 'Bath Light', 'ch1' => 'Hall Light', 'ch2' => 'Main Room Lights', 'ch3' => 'Bedroom Outlets', 'ch4' => 'Daikin Hydrobox', 'ch5' => 'Outdoor Outlets', 'ch6' => 'Disposal', 'ch7' => 'Main Room Outlets', 'ch8' => 'Air Handler', 'ch9' => 'Office Outlets', 'ch10' => 'Smoke Alarms', 'ch11' => 'JACE, Webbox, RIO', 'ch12' => 'Solar Thermal Hot Water', 'ch13' => 'ERV, Dining Light', 'ch14' => 'Washer', 'ch15' => 'Refrigerator', 'ch16' => 'Bath', 'ch17' => 'Microwave', 'ch19' => 'Kitchen Outlets W', 'ch20' =>'Veris', 'ch21' => 'Kitchen Outlets E', 'ch22' => 'Dishwasher', 'ch24' =>'Hot Water Tank', 'ch25' => 'Dryer', 'ch28' => 'Outdoor Daikin', 'ch29' => 'Oven', 'ch32' => 'Cooktop'} %>
+<%- headers = [labels[@ch], 'Timestamp'] -%>
 <%= CSV.generate_line headers %>
 <%- Record.select(['id', @ch, "timestamp"]).where(:timestamp => @start..@stop).find_each do |record| -%>
   <%= CSV.generate_line([record.attributes[@ch], record.attributes['timestamp'].strftime("%Y-%m-%d %H:%M:%S")], :row_sep => ?\t, :quote_char => ?\ ) %>
 <%- end -%>
+<% else %>
+<%- headers = ['Timestamp', 'Solar Power', 'Total Power', 'Voltage', 'Bath Light', 'Hall Light', 'Main Room Lights', 'Bedroom Outlets', 'Daikin Hydrobox', 'Outdoor Outlets', 'Disposal', 'Main Room Outlets', 'Air Handler', 'Office Outlets', 'Smoke Alarms', 'JACE, Webbox, RIO', 'Solar Thermal Hot Water', 'ERV, Dining Light', 'Washer', 'Refrigerator', 'Bath', 'Microwave', 'Kitchen Outlets W', 'Veris', 'Kitchen Outlets E', 'Dishwasher', 'Hot Water Tank', 'Dryer', 'Outdoor Daikin', 'Oven', 'Cooktop'] -%>
+<%= CSV.generate_line headers %>
+<%- at = Record.last.attributes -%>
+<%= CSV.generate_line([at['timestamp'].strftime("%Y-%m-%d %H:%M:%S"), at['sol_pwr'], at['tot_pwr'], at['volt'], at['ch0'], at['ch1'], at['ch2'], at['ch3'], at['ch4'], at['ch5'], at['ch6'], at['ch7'], at['ch8'], at['ch9'], at['ch10'], at['ch11'], at['ch12'], at['ch13'], at['ch14'], at['ch15'], at['ch16'], at['ch17'], at['ch19'], at['ch20'], at['ch21'], at['ch23'], at['ch24'], at['ch25'], at['ch28'], at['ch29'], at['ch32']], :row_sep => ?\t, :quote_char => ?\ ) %>
+<% end %>
