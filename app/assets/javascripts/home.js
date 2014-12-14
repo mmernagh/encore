@@ -48,6 +48,7 @@ function request_default_chart() {
 	$.ajax({
 	    type: "POST",
 	    url: "create.json",
+		contentType: "application/json",
 	    dataType: "json",
 	    success: function(data) {
 	        update_chart(data);
@@ -144,6 +145,7 @@ jQuery(function(){
 				    type: "POST",
 				    url: "create/" + $('#resource_select').val().replace("/", "-") + "/" + $('#date_start').val() +  "%20" + $('#time_start').val()  + "/" +
 				    	$('#date_end').val().replace("/", "-") +  "%20" + $('#time_end').val()  +".json",
+				    contentType: "application/json",
 				    dataType: "json",
 				    success: function(data) {
 				        update_chart(data);
@@ -153,6 +155,7 @@ jQuery(function(){
 	        	$.ajax({
 				    type: "POST",
 				    url: "create/" + $('#resource_select').val() + "/" + $('#time_select').val() + ".json",
+				    contentType: "application/json",
 				    dataType: "json",
 				    success: function(data) {
 				        update_chart(data);
