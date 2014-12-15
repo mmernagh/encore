@@ -72,8 +72,8 @@ class MainController < ApplicationController
 	        	@data = getData(channel, 24, 60 * 60 * 24 * 15, Time.now, "%-m-%-d-%Y");
 	        end
 	    elsif params.key?(:start_time)
-	    	start = Time.parse(params[:start_time].gsub('%20', ' '))
-	    	stop = Time.parse(params[:end_time].gsub('%20', ' '))
+	    	start = Time.parse(params[:start_time])
+	    	stop = Time.parse(params[:end_time])
 	    	nr_points = 30
 	    	case stop - start
 	    	when 0..30
