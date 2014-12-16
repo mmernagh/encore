@@ -44,6 +44,12 @@ function restrict_start_date() {
 	}
 }
 
+function update_req_time(time) {
+	var d = new Date(time);
+	alert(d);
+	$('#up_time').html(d.toDateString().substring(0,4) + d.toLocaleTimeString());
+}
+
 function request_default_chart() {
 	$.ajax({
 	    type: "POST",
@@ -83,6 +89,7 @@ function update_chart(data) {
 				chart = new Chart(ctx).Bar(chart_data, {});
 			}
 			$('#title').html('enCORE Present Values');
+			update_req_time(data.timestamp);
 		}
 	} else {
 		if (typeof data.err != 'undefined') alert('Missing data');
@@ -96,6 +103,7 @@ function update_chart(data) {
 				chart = new Chart(ctx).Line(chart_data, {});
 			}
 			$('#title').html('enCORE Historical Values');
+			update_req_time(jQuery.now());
 		}
 	}
 }
