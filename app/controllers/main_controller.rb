@@ -19,7 +19,7 @@ class MainController < ApplicationController
 		    end
       	end
       	if params.key?(:time)
-      		@stop =Time.now + @@timezoneOffset
+      		@stop =Time.now
 	      	case params[:time]
 			when "1"    
 	        	@start = @stop - 60 * 60
@@ -60,7 +60,7 @@ class MainController < ApplicationController
 	        end
 	    end
         if params.key?(:time)
-        	now = Time.now + @@timezoneOffset
+        	now = Time.now
 	        case params[:time]
 	        when "1"
 	        	@data = getData(channel, 30, 60 * 2, now, "%l:%M %p");
@@ -115,7 +115,7 @@ class MainController < ApplicationController
   	vals = Record.retrieve(res, num, step, stop.strftime("%Y-%m-%d %H:%M:%S"))
   	return {err: '1'} if vals == nil
   	for i in 0...num
-  		time = stop - (num - i) * step + 5 * 60 * 60
+  		time = stop - (num - i) * step
   		labels[i] = time.strftime format
   	end
   	Hash[[[:labels, labels], [:vals, vals]]]
