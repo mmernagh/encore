@@ -18,7 +18,7 @@
 		  	</div>
 		  	<div class='row_opt'>
 		  		<%= label_tag(:time_select_tag, "Time Range", class: :tag) %> 
-		  		<%= select_tag(:time_select, options_for_select([['Past Hour', 1], ['Past Day', 2], ['Past Week', 3], ['Past Month', 4], ['Past Year', 5], ['Custom', 6]], 1), class: :pick) %>
+		  		<%= select_tag(:time_select, options_for_select([['Past 15 min', 4], ['Past Hour', 1], ['Past 4 Hours', 5], ['Past Day', 2], ['Past Week', 3], ['Custom', 6]], 4), class: :pick) %>
 		  		<div class='opt' id='custom_time' hidden>
 		  			<div class='t_row_opt'>
 			  			<%= label_tag(:date_start_tag, "Start Date", class: :tag) %>

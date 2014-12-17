@@ -1,4 +1,5 @@
 var chart;
+var seenTimeRangeWarning = 0;
 var labels = ["Bath Light", "Hall Light", "Main Room Lights", "Bedroom Outlets", "Daikin Hydrobox", "Outdoor Outlets", 
 				"Disposal", "Main Room Outlets", "Air Handler", "Office Outlets", "Smoke Alarms",
 				"JACE, Webbox, RIO", "Solar Thermal Hot Water", "ERV, Dining Light", "Washer", "Refrigerator", "Bath",  "Microwave", 
@@ -13,6 +14,7 @@ function display_historical_options() {
 		$('#hidden_options').show();
 	} else {
 		$('#hidden_options').hide();
+		request_default_chart();
 	}
 }
 
@@ -32,6 +34,7 @@ function restrict_end_date() {
 		new Date('May 1, 2000' + $('#time_end').val()) < new Date('May 1, 2000' + $('#time_start').val())) {
 		$('#time_end').val($('#time_start').val());
 	}
+	alert_time_range();
 }
 
 function restrict_start_date() {
@@ -42,12 +45,20 @@ function restrict_start_date() {
 		new Date('May 1, 2000' + $('#time_start').val()) > new Date('May 1, 2000' + $('#time_end').val())) {
 		$('#time_start').val($('#time_end').val());
 	}
+	alert_time_range();
+}
+
+function alert_time_range() {
+	if (new Date($('#date_end').val()) - new Date($('#date_start').val()) > 60 * 60 * 24  * 7 && seenTimeRangeWarning == 0) {
+		alert("Plots of more than a week may not be representative, since data points are sampled, not averaged.");
+		seenTimeRangeWarning = 1;
+	}
 }
 
 function update_req_time(time) {
 	var d = new Date(time);
-	alert(d);
-	$('#up_time').html(d.toDateString().substring(0,4) + d.toLocaleTimeString());
+	d.setHours((d.getHours() + d.getTimezoneOffset()/60) % 24);
+	$('#up_time').html(d.toDateString().substring(0, 4) + d.toLocaleTimeString());
 }
 
 function request_default_chart() {
@@ -120,6 +131,9 @@ jQuery(function(){
         });
     });
     jQuery("select[name='time_select']").each(function(index, button){
+        jQuery(button).focusout(function(){
+            display_custom_times();
+        });
         jQuery(button).click(function(){
             display_custom_times();
         });
